@@ -1,0 +1,63 @@
+{% extends 'base.twig' %}
+
+ {% block stylesheets %}
+         <link href="{{ app.request.basepath }}/css/EstiloFrontend.css" rel="stylesheet" type="text/css" />
+  {% endblock %}  
+
+{% block javascripts %}
+    <script type="text/javascript">
+                   var _gaq = _gaq || [];
+                   _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+                   _gaq.push(['_trackPageview']);
+
+                   (function() {
+                     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                   })();
+    </script>
+{% endblock %}
+
+{% block body %}
+  <!-- Contenedor de toda la plantilla -->
+  <div id="contenedor">
+  <!-- Menú principal -->
+    <div id="header"> 
+    <!-- Contenedor para el logotipo -->
+        <div id="logoArea"></div> 
+        <!-- Contenedor para las opciones del menu -->
+          <div id="navArea">
+          <!-- Opciones de menu -->
+            <ul id="nav">
+              <a href="{{ path('portada') }}"><li>Inicio</li></a>
+              <a href="#"><li>Fotos</li></a>
+              <a href="#"><li>Sobre mí</li></a>
+              <a href="{{ path('contacto') }}"><li>Contacto</li></a>
+            </ul>  <!-- Opciones de menu -->
+          </div>   <!-- Contenedor para las opciones del menu -->
+      </div>       <!-- Menú principal --> 
+
+   <!-- Contenedor para el contenido de las noticias -->   
+  <article>
+    {% block article %}{% endblock %}
+  </article>
+
+    <!-- Contenedor para login, últimas noticias, buscar articulos por meses, ... -->
+    <aside>
+      {% block aside %}
+        <h2>Ultimas noticias</h2>
+      {% endblock %}
+    </aside>
+
+    <!-- Contenedor para el footer -->
+    <footer>
+     <div id="navFooter">
+       <ul id="ulFooter">
+        <li>Copyright @2014 Antonio Jiménez</li>
+          <a href="{{ path('ayuda') }}"><li>Ayuda</li></a>
+        </ul>
+     </div>
+    </footer>
+
+  </div> <!-- Contenedor de toda la plantilla -->  
+{% endblock %}

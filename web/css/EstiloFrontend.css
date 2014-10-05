@@ -1,0 +1,148 @@
+* 
+{
+    margin: 0; 
+    padding: 0;
+}
+
+/* -- -------------------------------------------------------------------------------*/
+body 
+{
+  margin: 0;
+  padding: 0;
+  background-color: #D9DADB;
+  font: 70%/160% "verdana", sans-serif;
+  color: #192666;
+}
+
+/* --Contenedor de toda la plantilla*/
+#contenedor
+{   
+        font-family: arial;
+        background-color: #D9DADB;
+}
+
+/* -- Contenedor para el contenido de las noticias*/
+article
+{
+    float: left;
+    width: 50%;
+    margin-top: 25px;
+    margin-left: 150px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    background-color: #F4F4F4;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+/* -- Contenedor para login, últimas noticias, buscar articulos por meses, ...*/
+aside 
+{
+    float: left;
+    width: 19%;
+    background-color: #FFF9F9;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    margin-left: 25px;
+    border-radius: 5px;
+}
+
+/* -- Menú principal */
+#header 
+{
+    background-color: black;
+    height: 100px;
+    width: 100%;
+    
+}
+
+/* -- Contenedor para el logotipo*/
+#logoArea
+{
+    width: 60%;
+    height: 110px;
+    background-image: url("web/zimg/logo.png");
+    float: left;
+}
+
+/* Enlaces del menú principal */
+#navArea
+{
+    width: 40%;
+    height: 100px;
+    float: right;
+}
+
+#nav {
+    list-style: none;
+    margin-top: 30px;
+}
+
+#nav a
+{;
+    color: white;
+    text-decoration: none;
+}
+
+#nav li
+{
+    float: left;
+    margin-left: 30px;
+    background-color: #252525;
+    padding: 8px;
+    border: 1px solid silver;
+    border-radius: 5px;
+}
+
+#nav li:hover
+{
+    background-color: gray;
+}
+
+footer
+{
+    background-color: black;
+    height: 30px;
+    width: 100%;
+    color: white;
+    padding-top: 10px; 
+    clear: both;
+
+}
+
+/* Enlaces del footer */
+#navFooter
+{
+    width: 700px;
+    height: 100px;
+    float: left;
+}
+
+#ulFooter {
+    list-style: none;
+    margin-top: 10px;
+}
+
+#ulFooter a
+{;
+    color: white;
+    text-decoration: none;
+}
+
+#ulFooter li
+{
+    float: left;
+    margin-left: 30px;
+}
+
+#aviso-formulario
+{
+    color: red;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/*#copy
+{
+    font-size: 10px;
+}*/

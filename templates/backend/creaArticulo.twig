@@ -1,0 +1,21 @@
+{% extends 'backend/layout.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block article %}
+	<div id="primary-content" class="clearfix">
+    <h2>Crear nuevo articulo</h2>
+    <form action="{{ path('nuevo-articulo') }}" method="post">
+    	{{ form_widget(form) }}
+    	<input type="submit" name="submit" value="Guardar">
+    </form>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<!-- No funciona con ckeditor, al enviar el formulario dice rellene este campo
+	<script>
+    CKEDITOR.replace( 'form[contenido]' );
+</script> -->
+{% endblock %}

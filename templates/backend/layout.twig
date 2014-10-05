@@ -1,0 +1,39 @@
+{% extends 'base.twig' %}
+
+{% block stylesheets %}
+         <link href="{{ app.request.basepath }}/css/EstiloBackend.css" rel="stylesheet" type="text/css" />
+  {% endblock %} 
+
+
+{% block body %}
+  <!-- Contenedor de toda la plantilla -->
+  <div id="contenedor_backend">
+  <!-- Menú principal -->
+    <div id="header"> 
+    <!-- Contenedor para el logotipo -->
+        <div id="logoArea"></div> 
+        <!-- Contenedor para las opciones del menu -->
+          <div id="navArea">
+          <!-- Opciones de menu -->
+            <ul id="nav">
+              <a href="{{ path('portada') }}"><li>Portada</li></a>
+              <a href="{{ path('backend') }}"><li>Articulos</li></a>
+              <a href="#"><li>Fotos</li></a>
+              <a href="#"><li>Cerrar sesión</li></a>
+            </ul>  <!-- Opciones de menu -->
+          </div>   <!-- Contenedor para las opciones del menu -->
+      </div>       <!-- Menú principal --> 
+
+   <!-- Contenedor para el contenido de las noticias -->   
+  <article>
+    {% block article %}{% endblock %}
+  </article>
+
+  </div> <!-- Contenedor de toda la plantilla -->  
+{% endblock %}
+
+{% block javascripts %}
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="{{ app.request.basepath }}/ckeditor/ckeditor.js"></script>
+{% endblock %}
+

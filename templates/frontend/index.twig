@@ -1,0 +1,33 @@
+{% extends 'frontend/layout.twig' %}
+
+{% block title %}
+{% endblock %}
+
+{% block id  'portada'%}
+
+{% block article %}
+	<h1>Está es la portada, bienvenido a mi blog sobre Silex</h1></br>
+   
+   {% for articulo in articulos %}
+       <div class="post">
+       		<h1>{{ articulo.titulo }}</h1>
+       		<span class="fecha">{{ articulo.creado | date }}</span>
+       		<p>{{ articulo.contenido | raw }}</p>
+       		<hr>
+       </div>
+    {% else %}
+        <h1>Aún no hay artículos creados</h1>
+    {% endfor %}
+{% endblock %}
+
+{% block aside %}
+    {{ parent() }}
+    <ul>
+      {% for oneTest in test %}
+        <li>{{ oneTest }}</li>
+      {% else %}
+        <li>No hay datos de test</li>
+      {% endfor %}
+    </ul>
+
+{% endblock %}

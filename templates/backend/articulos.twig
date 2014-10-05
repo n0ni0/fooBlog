@@ -1,0 +1,46 @@
+{% extends 'backend/layout.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block id 'backend' %}
+	
+
+{% block article %}
+	<a class="boton" title="Botón con HTM5 y CSS3" href="{{ path('nuevo-articulo') }}">Crear nuevo artículo</a>
+
+   <h2>Artículos publicados</h2>
+   <table class="tabla">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th class="span3">Título</th>
+                    <th>Contenido</th>
+                    <th class="span3">Fecha publicación</th>
+                    <th class="span2">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+             {% for articulo in articulos %}
+                <tr>
+                    <td>{{ articulo.id }}</td>
+                    <td>{{ articulo.titulo }}</td>
+                    <td>{{ articulo.contenido | striptags | truncate(160) | raw }}</td>
+                    <td>{{ articulo.creado | date('d/m/Y H:M:s') }}</td>
+                    <td>
+                        <a href="{{ path('editar-articulo', { 'id': articulo.id }) }}">
+                            Editar
+                        </a> | 
+                        <a href="{{ path('borrar-articulo', { 'id': articulo.id }) }}">
+                            Borrar
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aún no hay artículos creados</td>
+                </tr>
+             {% endfor %}   
+            </tbody>
+        </table>
+{% endblock %}

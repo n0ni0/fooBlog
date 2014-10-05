@@ -1,0 +1,24 @@
+{% extends '/frontend/layout.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block article %}
+	<div id="primary-content" class="clearfix">
+
+	<div id="aviso-formulario">
+		{{ mensaje }}
+	</div>
+
+    <form action="{{ path('contacto') }}" method="post">
+    	{{ form_widget(form) }}
+    	<input type="submit" name="submit" value="Enviar">
+    </form>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+	<!-- <script>
+    CKEDITOR.replace( 'form[mensaje]' );
+</script> -->
+{% endblock %}
