@@ -1,4 +1,9 @@
 <?php
+
+	namespace repositories;
+
+	use entities\Post;
+
 	class PostRepository {
 
 		static public function getPostById($postId) {
@@ -15,9 +20,10 @@
 
 			foreach ($allPostsArray as $onePostArray) {
 				$onePost = new Post();
-				$onePost->setTitle($onePostArray['titile'])
-						->setCreateDate($onePostArray['createDate'])
-						->setAuthor($onePostArray['author']);
+				$onePost->setTitle($onePostArray['titulo'])
+						->setCreateDate($onePostArray['creado'])
+						->setAuthor("Antonio Jiménez")
+						->setContent($onePostArray['contenido']);
 
 				array_push($posts, $onePost);
 
