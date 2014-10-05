@@ -10,9 +10,10 @@
    
    {% for articulo in articulos %}
        <div class="post">
-       		<h1>{{ articulo.titulo }}</h1>
-       		<span class="fecha">{{ articulo.creado | date }}</span>
-       		<p>{{ articulo.contenido | raw }}</p>
+       		<h1>{{ articulo.Title }}</h1>
+       		<span class="fecha">{{ articulo.CreateDate | date }}</span>
+          <span class="fecha">{{ articulo.Author }}</span>
+       		<p>{{ articulo.Content | raw }}</p>
        		<hr>
        </div>
     {% else %}
@@ -20,14 +21,3 @@
     {% endfor %}
 {% endblock %}
 
-{% block aside %}
-    {{ parent() }}
-    <ul>
-      {% for oneTest in test %}
-        <li>{{ oneTest }}</li>
-      {% else %}
-        <li>No hay datos de test</li>
-      {% endfor %}
-    </ul>
-
-{% endblock %}
