@@ -6,21 +6,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use repositories\PostRepository;
+
 // Controladores relacionados con la parte de administración del sitio web
 $frontend = $app['controllers_factory'];
 
 // -- PORTADA con artículos -----------------------------------------------------------------------------------------
 $frontend->get('/', function () use ($app) {
 
-    $articulos = $app['db']->fetchAll("SELECT * FROM entrada");
-    $test = array(1,2,3,4,5);
 
-    print "<pre>";
-    print_r($articulos);
-    print "</pre>";
+    $posts = PostRepository::getAllPosts($app);
+
     return $app['twig']->render('frontend/index.twig', array(
-       'articulos'   => $articulos,
-       'test' => $test,
+       'articulos'   => $posts,
     ));
 })
 ->bind('portada');
