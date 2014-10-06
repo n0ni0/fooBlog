@@ -1,4 +1,4 @@
-0<?php 
+<?php 
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -8,12 +8,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use repositories\PostRepository;
 
-// Controladores relacionados con la parte de administración del sitio web
+// Controladores relacionados con la parte del frontend del sitio web
 $frontend = $app['controllers_factory'];
 
 // -- PORTADA con artículos -----------------------------------------------------------------------------------------
 $frontend->get('/', function () use ($app) {
-
 
     $posts = PostRepository::getAllPosts($app);
 
@@ -22,7 +21,6 @@ $frontend->get('/', function () use ($app) {
     ));
 })
 ->bind('portada');
-
 
 
 // -- AYUDA ---------------------------------------------------------------------------------------------------------
@@ -77,7 +75,7 @@ $frontend->match('/contacto/', function (Request $request) use ($app)
             // -- Preparación del email y del envio -------------------------------
             $app['mailer']->send(\Swift_Message::newInstance()
             ->setSubject('Formulario de conctacto blog silex')
-            ->setFrom(array('ajimenez.bf@gmail.com' => 'norepli@gmail.com'))
+            ->setFrom(array('ajimenez.bf@gmail.com' => 'noreply@gmail.com'))
             ->setTo(array('ajimenez.bf@ono.com'))
             ->setBody($app['twig']->render('frontend/email.twig',
                 array('nombre'    => $datos['nombre'],

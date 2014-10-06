@@ -13,6 +13,15 @@
 			return $post;
 		}
 
+		/**
+		* Get all stored posts
+		* 
+		* $author: 	Antonio Jiménez
+		* $params:  $app: app type
+		*			$date: DateTime
+		*
+		* $return: 	$posts: Array[Posts]
+		**/
 		static public function getAllPosts($app, $date = null) {
 			$posts = Array();
 
