@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use repositories\PostRepository;
+
 // Controladores relacionados con la parte de administración del sitio web
 $backend = $app['controllers_factory'];
 
@@ -22,10 +24,10 @@ $backend->before(function () use($app)
 // -- PORTADA --------------------------------------------------------------------------
 $backend->match('/', function() use($app)
 {
-	$articulos = $app['db']->fetchAll("SELECT * FROM entrada");
+	$posts = PostRepository::getAllPosts($app);
 
-	return $app['twig']->render('backend/articulos.twig', array(
-		'articulos' => $articulos
+	return $app['twig']->render('backend/listaArticulos.twig', array(
+		'articles' => $posts
 	));
 })
 ->bind('backend');
@@ -137,13 +139,11 @@ $backend->match('/{id}/editar', function(Request $request, $id) use($app)
 
 
 
-
-
-
 // - BORRAR articulo ----------------------------------------------------------------------------------------------------------
 $backend->match('/{id}/borrar', function($id) use($app)
 {
-	$articulo = $app['db']->delete('entrada', array('id' => $id));
+	//$articulo = $app['db']->delete('entrada', array('id' => $id));
+	$post = PostRepository::deletePostById($id, $app);
 
 	return new RedirectResponse($app['url_generator']->generate('backend'));
 })
