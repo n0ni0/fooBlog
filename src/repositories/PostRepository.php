@@ -32,7 +32,8 @@
 				$onePost->setTitle($onePostArray['titulo'])
 						->setCreateDate($onePostArray['creado'])
 						->setAuthor("Antonio Jiménez")
-						->setContent($onePostArray['contenido']);
+						->setContent($onePostArray['contenido'])
+						->setId($onePostArray['id']);
 
 				array_push($posts, $onePost);
 
@@ -40,4 +41,13 @@
 
 			return $posts;
 		}
+
+		// ---------------------------------------------------------------------------------------
+		static public function deletePostById($postId, $app)
+		{
+			$post = $app['db']->delete('entrada', array('id' => $postId));
+
+			return $post;
 	}
+
+}
