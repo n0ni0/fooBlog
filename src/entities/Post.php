@@ -3,6 +3,7 @@
 namespace entities;
 
 class Post {
+	protected $id;
 	protected $author = "";
 	protected $createDate = "";
 	protected $title = "";
@@ -15,11 +16,16 @@ class Post {
 		return $this; 
 	}
 
+	// --  setters -------------------
 	public function setTitle($postTitle) { $this->title = $postTitle; return $this; }
 
 	public function setCreateDate($createDate) { $this->createDate = $createDate; return $this; }
 
 	public function setContent($content) { $this->content = $content; return $this; }
+
+	public function setId($id) { $this->id = $id; return $this; }
+
+	// -- getters ------------------------------
 
 	public function getAuthor() { return $this->author; }
 
@@ -28,5 +34,7 @@ class Post {
 	public function getCreateDate() { return $this->createDate; }
 
 	public function getContent() { return $this->content; }
+
+	public function getId() { return $this->id; }
 
 }
