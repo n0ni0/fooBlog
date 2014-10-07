@@ -8,12 +8,12 @@
 {% block article %}
 	<h1>Está es la portada, bienvenido a mi blog sobre Silex</h1></br>
    
-   {% for articulo in articulos %}
+   {% for article in articles %}
        <div class="post">
-       		<h1>{{ articulo.Title }}</h1>
-       		<span class="fecha">{{ articulo.CreateDate | date }}</span>
-          <span class="fecha">{{ articulo.Author }}</span>
-       		<p>{{ articulo.Content | raw }}</p>
+       		<h1>{{ article.Title }}</h1>
+       		<span class="fecha">{{ article.CreateDate | date }}</span>
+          <span class="fecha">{{ article.Author }}</span>
+       		<p>{{ article.Content | raw }}</p>
        		<hr>
        </div>
     {% else %}

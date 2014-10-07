@@ -17,7 +17,7 @@ $frontend->get('/', function () use ($app) {
     $posts = PostRepository::getAllPosts($app);
 
     return $app['twig']->render('frontend/index.twig', array(
-       'articulos'   => $posts,
+       'articles'   => $posts,
     ));
 })
 ->bind('portada');
