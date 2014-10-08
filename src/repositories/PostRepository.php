@@ -48,6 +48,13 @@
 			$post = $app['db']->delete('entrada', array('id' => $postId));
 
 			return $post;
-	}
+		}
 
+		// ---------------------------------------------------------------------------------------
+		static public function editPostByID($postId, $app)
+		{
+			$post = $app['db']->fetchAssoc('SELECT * FROM entrada WHERE id = ?', array($postId));
+
+			return $post;
+		}
 }
