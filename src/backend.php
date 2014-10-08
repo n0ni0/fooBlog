@@ -82,14 +82,15 @@ $backend->match('/creaArticulo/', function(Request $request) use($app)
 // - EDITAR articulo -------------------------------------------------------------------------------------------------------------
 $backend->match('/{id}/editar', function(Request $request, $id) use($app)
 {
-	$articulo = $app['db']->fetchAssoc('SELECT * FROM entrada WHERE id = ?', array($id));
+	//$articulo = $app['db']->fetchAssoc('SELECT * FROM entrada WHERE id = ?', array($id));
+	$post = PostRepository::editPostById($id, $app);
 
-	if(!$articulo)
+	if(!$post)
 	{
 		return new RedirectResponse($app['url_generator']->generate('backend'));
 	}
 
-	$form = $app['form.factory']->createBuilder('form', $articulo)
+	$form = $app['form.factory']->createBuilder('form', $post)
 		->add('titulo', 'text', array(
 			'label' 	  => 'Título',
 			'required'    => true,
@@ -121,10 +122,10 @@ $backend->match('/{id}/editar', function(Request $request, $id) use($app)
 		$form->bind($request);
 		if($form->isValid())
 		{
-			$articulo = $form->getData();
+			$post = $form->getData();
 
 			$app['db']->update('entrada',
-				array('titulo' => $articulo['titulo'], 'contenido' => $articulo['contenido']),
+				array('titulo' => $post['titulo'], 'contenido' => $post['contenido']),
 				array('id' => $id)
 			);
 
@@ -132,7 +133,7 @@ $backend->match('/{id}/editar', function(Request $request, $id) use($app)
 		}
 	}
 
-	return $app['twig']->render('backend/editaArticulo.twig', array('articulo' => $articulo, 'form' => $form->createView()));
+	return $app['twig']->render('backend/editaArticulo.twig', array('articulo' => $post, 'form' => $form->createView()));
 
 })
 ->bind('editar-articulo');
