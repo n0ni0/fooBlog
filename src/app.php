@@ -66,8 +66,8 @@ $app->register(new SwiftmailerServiceProvider());
 $app['swiftmailer.options'] = array(
 	'host'		 => 'smtp.gmail.com',
 	'port'		 => 465,
-	'username'	 => 'ajimenez.bf@gmail.com',
-	'password'	 => 'achuparla',
+	'username'	 => 'email@email.com',
+	'password'	 => 'password',
 	'encryption' => 'ssl',
 	'auth_mode'	 => 'login'
 );
