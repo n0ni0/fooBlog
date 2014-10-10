@@ -9,12 +9,24 @@
 	<h1>Está es la portada, bienvenido a mi blog sobre Silex</h1></br>
    
    {% for article in articles %}
-       <div class="post">
-       		<h1>{{ article.Title }}</h1>
+         <div class="post">
+         <a href="{{ path('posts', { 'id': article.id }) }}"><h1>{{ article.Title }}</h1></a>
        		<span class="fecha">{{ article.CreateDate | date }}</span>
-          <span class="fecha">{{ article.Author }}</span>
+          <span class="autor">{{ article.Author }}</span>
        		<p>{{ article.Content | raw }}</p>
        		<hr>
+       </div>
+    {% else %}
+        <h1>Aún no hay artículos creados</h1>
+    {% endfor %}
+{% endblock %}
+
+{% block aside %}
+    {{ parent() }}
+   
+   {% for article in articles %}
+       <div class="post">
+          <p>{{ article.Title | raw }}</p>
        </div>
     {% else %}
         <h1>Aún no hay artículos creados</h1>

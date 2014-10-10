@@ -1,0 +1,28 @@
+{% extends 'frontend/layout.twig' %}
+
+{% block title %}
+{% endblock %}
+
+{% block id  'post'%}
+
+{% block article %}
+	<h1>Está viendo la vista de post sencilla</h1></br>
+       <div class="post">
+       		<h1>{{ articles.titulo }}</h1>
+       		<span class="fecha">{{ articles.creado | date }}</span>
+       		<p>{{ articles.contenido | raw }}</p>
+       		<hr>
+       </div>
+{% endblock %}
+
+{% block aside %}
+    {{ parent() }}
+   
+   {% for article in articles %}
+       <div class="post">
+          <p>{{ articles.titulo | raw }}</p>
+       </div>
+    {% else %}
+        <h1>Aún no hay artículos creados</h1>
+    {% endfor %}
+{% endblock %}

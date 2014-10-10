@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use repositories\PostRepository;
+use entities\Post;
 
 // Controladores relacionados con la parte del frontend del sitio web
 $frontend = $app['controllers_factory'];
@@ -102,6 +103,28 @@ $frontend->match('/contacto/', function (Request $request) use ($app)
 
 })
 ->bind('contacto');
+
+// -- ÚLTMAS NOTICICAS ----------------------------------------------------------------------
+$frontend->get('/ultimas', function () use ($app)
+{
+    $posts = PostRepository::getAllPosts($app);
+
+    return $app['twig']->render('frontend/ultimas.twig', array(
+       'articles'   => $posts,
+    ));
+})
+->bind('ultimas');
+
+// -- POSTS ------------------------------------------------------------------------------------
+$frontend->get('/articulo/{id}', function($id) use ($app)
+{
+    $posts = PostRepository::editPostById($id, $app);
+
+    return $app['twig']->render('frontend/post.twig', array(
+       'articles'   => $posts,
+    ));
+})
+->bind('posts');
 
 return $frontend;
 
