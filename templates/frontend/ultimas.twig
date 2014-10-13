@@ -10,7 +10,7 @@
    
    {% for article in articles %}
        <div class="post">
-       		<p>{{ article.Title | raw }}</p>
+       		<a href="{{ path('posts', { 'id': article.id }) }}"><h1>{{ article.Title }}</h1></a>
        </div>
     {% else %}
         <h1>Aún no hay artículos creados</h1>

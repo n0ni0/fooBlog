@@ -24,6 +24,7 @@ $app->register(new FormServiceProvider()); // necesario para formularios
 $app->register(new TranslationServiceProvider());  // necesario para formularios
 
 
+
 // -- TWIG -------------------------------------------------------------------------------------------
 $app->register(new TwigServiceProvider());
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {

@@ -1,12 +1,20 @@
 <?php 
 
+namespace controllers;
+
+use Silex\Application;
+use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 use repositories\PostRepository;
+
+class backendController implements ControllerProviderInterface
+{
+    public function connect(Application $app)
+    {
 
 // Controladores relacionados con la parte de administración del sitio web
 $backend = $app['controllers_factory'];
@@ -152,5 +160,7 @@ $backend->match('/{id}/borrar', function($id) use($app)
 
 
 return $backend;
+}
+}
 
 ?>
