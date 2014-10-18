@@ -46,8 +46,16 @@
     <aside>
       {% block aside %}
         <h2>Ultimas noticias</h2>
+        {% for article in articles %}
+           <div class="post">
+              <a href="{{ path('posts', { 'id': article.id }) }}"><h1>{{ article.Title }}</h1></a>
+           </div>
+        {% else %}
+            <h1>Aún no hay artículos creados</h1>
+        {% endfor %}
       {% endblock %}
     </aside>
+
 
     <!-- Contenedor para el footer -->
     <footer>

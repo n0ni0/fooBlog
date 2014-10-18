@@ -14,15 +14,3 @@
        		<hr>
        </div>
 {% endblock %}
-
-{% block aside %}
-    {{ parent() }}
-   
-   {% for article in articles %}
-       <div class="post">
-          <p>{{ articles.titulo | raw }}</p>
-       </div>
-    {% else %}
-        <h1>Aún no hay artículos creados</h1>
-    {% endfor %}
-{% endblock %}

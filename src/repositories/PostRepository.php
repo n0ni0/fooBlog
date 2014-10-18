@@ -34,7 +34,7 @@
 						->setAuthor("Antonio Jiménez")
 						->setContent($onePostArray['contenido'])
 						->setId($onePostArray['id']);
-
+				// Inserta uno o más elementos al final de un array    $array[] = $var;
 				array_push($posts, $onePost);
 
 			}

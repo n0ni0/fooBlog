@@ -35,7 +35,12 @@ class frontendController implements ControllerProviderInterface
         // -- AYUDA ---------------------------------------------------------------------------------------------------------
         $frontend->get('/ayuda/', function () use ($app)
         {
-            return $app['twig']->render('frontend/ayuda.twig', array());
+
+            $posts = PostRepository::getAllPosts($app);
+
+            return $app['twig']->render('frontend/ayuda.twig', array(
+                'articles'   => $posts,
+            ));
         })
         ->bind('ayuda');
 
