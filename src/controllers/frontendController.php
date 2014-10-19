@@ -48,6 +48,8 @@ class frontendController implements ControllerProviderInterface
         // -- CONTACTO -------------------------------------------------------------------------------------------------------
         $frontend->match('/contacto/', function (Request $request) use ($app)
         {
+            $posts = PostRepository::getAllPosts($app);
+
             $form = $app['form.factory']->createBuilder('form')
                 ->add('nombre', 'text', array(
                     'label'         => 'Nombre',
@@ -102,16 +104,18 @@ class frontendController implements ControllerProviderInterface
             // -- Vista del formulario antes de enviar el correo
             return $app['twig']->render('frontend/contacto.twig', array(
                 'mensaje' => 'Mensaje enviado, te responderemos lo antes posible.',
-                'form'    => $form->createView()));
+                'form'    => $form->createView(),
+                ''
+                ));
 
             }
 
             // -- Vista del formulario después de enviar el correo
             return $app['twig']->render('frontend/contacto.twig', array(
-                'mensaje' => 'Formulario de contacto:',
-                'form' => $form->createView()
-                )
-            );    
+                'mensaje'  => 'Formulario de contacto:',
+                'form'     => $form->createView(),
+                'articles' => $posts,
+            ));    
 
         })
         ->bind('contacto');
