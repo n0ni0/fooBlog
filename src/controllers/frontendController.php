@@ -105,7 +105,7 @@ class frontendController implements ControllerProviderInterface
             return $app['twig']->render('frontend/contacto.twig', array(
                 'mensaje' => 'Mensaje enviado, te responderemos lo antes posible.',
                 'form'    => $form->createView(),
-                ''
+                'articles' => $posts,
                 ));
 
             }
