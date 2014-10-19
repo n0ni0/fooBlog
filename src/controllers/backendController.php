@@ -93,8 +93,8 @@ class backendController implements ControllerProviderInterface
     // - EDITAR articulo -------------------------------------------------------------------------------------------------------------
     $backend->match('/{id}/editar', function(Request $request, $id) use($app)
     {
-      $post = $app['db']->fetchAssoc('SELECT * FROM entrada WHERE id = ?', array($id));
-      //$post = PostRepository::editPostById($id, $app);
+      //$post = $app['db']->fetchAssoc('SELECT * FROM entrada WHERE id = ?', array($id));
+      $post = PostRepository::editPostById($id, $app);
 
       if(!$post)
       {
