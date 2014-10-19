@@ -3,14 +3,12 @@
 {% block title %}
 {% endblock %}
 
-{% block id  'post'%}
-
 {% block article %}
 	<h1>Está viendo la vista de post sencilla</h1></br>
        <div class="post">
-       		<h1>{{ articles.titulo }}</h1>
-       		<span class="fecha">{{ articles.creado | date }}</span>
-       		<p>{{ articles.contenido | raw }}</p>
+          <h1>{{ currentPost.Title }}</h1>
+       		<span class="fecha">{{ currentPost.CreateDate | date }}</span>
+       		<p>{{ currentPost.Content | raw }}</p>
        		<hr>
        </div>
 {% endblock %}

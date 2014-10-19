@@ -17,7 +17,6 @@ class frontendController implements ControllerProviderInterface
     public function connect(Application $app)
     {
 
-        // Controladores relacionados con la parte del frontend del sitio web
         $frontend = $app['controllers_factory'];
 
         // -- PORTADA con artículos -----------------------------------------------------------------------------------------
@@ -117,24 +116,17 @@ class frontendController implements ControllerProviderInterface
         })
         ->bind('contacto');
 
-        // -- ÚLTMAS NOTICICAS ----------------------------------------------------------------------
-        $frontend->get('/ultimas', function () use ($app)
-        {
-            $posts = PostRepository::getAllPosts($app);
 
-            return $app['twig']->render('frontend/ultimas.twig', array(
-               'articles'   => $posts,
-            ));
-        })
-        ->bind('ultimas');
 
         // -- POSTS ------------------------------------------------------------------------------------
         $frontend->get('/articulo/{id}', function($id) use ($app)
         {
-            $posts = PostRepository::editPostById($id, $app);
+            $currentPost = new Post($app, $id);
+            $latestPosts = PostRepository::getAllPosts($app);
 
             return $app['twig']->render('frontend/post.twig', array(
-               'articles'   => $posts,
+               'currentPost'    => $currentPost,
+               'articles'       => $latestPosts,
             ));
         })
         ->bind('posts');

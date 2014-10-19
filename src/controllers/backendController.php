@@ -10,9 +10,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use repositories\PostRepository;
+use entities\Post;
 
 class backendController implements ControllerProviderInterface
 {
+  private function addPost($app, $formData) {
+      $postToAdd = new Post($app);
+      $postToAdd->setTitle($formData['titulo']);
+      $postToAdd->setContent($formData['contenido']);
+
+      $postToAdd->save();
+  }
+
     public function connect(Application $app)
     {
 
@@ -70,14 +79,10 @@ class backendController implements ControllerProviderInterface
       { 
         //Asocia el formulario con los datos enviados por el usuario y dispara el mecanismo de validación
         $form->bind($request);
-        // Si el valor es true, el formulario es válido y prosigue
+
         if($form->isValid())
         {
-          // entrada es un array con claves 'titulo' y 'contenido'
-          $entrada = $form->getData();
-          // Añade en la clave creado la fecha y hora del momento de la creación
-          $entrada['creado'] = date("Y-m-d H:i:s");
-          $app['db']->insert('entrada', $entrada);
+          $this->addPost($app, $form->getData()); 
         }
       }
       // muestra el formulario
@@ -85,13 +90,11 @@ class backendController implements ControllerProviderInterface
     })
     ->bind('nuevo-articulo');
 
-
-
     // - EDITAR articulo -------------------------------------------------------------------------------------------------------------
     $backend->match('/{id}/editar', function(Request $request, $id) use($app)
     {
-      //$articulo = $app['db']->fetchAssoc('SELECT * FROM entrada WHERE id = ?', array($id));
-      $post = PostRepository::editPostById($id, $app);
+      $post = $app['db']->fetchAssoc('SELECT * FROM entrada WHERE id = ?', array($id));
+      //$post = PostRepository::editPostById($id, $app);
 
       if(!$post)
       {
@@ -151,9 +154,8 @@ class backendController implements ControllerProviderInterface
     // - BORRAR articulo ----------------------------------------------------------------------------------------------------------
     $backend->match('/{id}/borrar', function($id) use($app)
     {
-      //$articulo = $app['db']->delete('entrada', array('id' => $id));
-      $post = PostRepository::deletePostById($id, $app);
-
+      $currentPost = new Post($app, $id);
+      $currentPost->delete();
       return new RedirectResponse($app['url_generator']->generate('backend'));
     })
     ->bind('borrar-articulo');

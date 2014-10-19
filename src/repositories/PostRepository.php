@@ -6,12 +6,7 @@
 
 	class PostRepository {
 
-		static public function getPostById($postId) {
-			$post = new Post();
-			$post->getPostById($postId);
-
-			return $post;
-		}
+		static private $postTable = 'entrada';
 
 		/**
 		* Get all stored posts
@@ -25,10 +20,10 @@
 		static public function getAllPosts($app, $date = null) {
 			$posts = Array();
 
-			$allPostsArray = $app['db']->fetchAll("SELECT * FROM entrada");
+			$allPostsArray = $app['db']->fetchAll("SELECT * FROM " . self::$postTable);
 
 			foreach ($allPostsArray as $onePostArray) {
-				$onePost = new Post();
+				$onePost = new Post($app);
 				$onePost->setTitle($onePostArray['titulo'])
 						->setCreateDate($onePostArray['creado'])
 						->setAuthor("Antonio Jiménez")
@@ -42,19 +37,4 @@
 			return $posts;
 		}
 
-		// ---------------------------------------------------------------------------------------
-		static public function deletePostById($postId, $app)
-		{
-			$post = $app['db']->delete('entrada', array('id' => $postId));
-
-			return $post;
-		}
-
-		// ---------------------------------------------------------------------------------------
-		static public function editPostByID($postId, $app)
-		{
-			$post = $app['db']->fetchAssoc('SELECT * FROM entrada WHERE id = ?', array($postId));
-
-			return $post;
-		}
 }
