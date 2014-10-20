@@ -23,7 +23,8 @@
         "symfony/validator": "~2.3",
         "doctrine/dbal": "2.3.*",
         "twig/extensions": "1.0.*@dev",
-        "swiftmailer/swiftmailer": "@stable"
+        "swiftmailer/swiftmailer": "@stable",
+        "bangpound/ladybug-silex-provider": "dev-master"
     },
     "autoload": {
         "psr-0": { "": "src/" }
