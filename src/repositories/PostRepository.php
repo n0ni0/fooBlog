@@ -19,8 +19,9 @@
 		**/
 		static public function getAllPosts($app, $date = null) {
 			$posts = Array();
+      		$table = self::$postTable;
 
-			$allPostsArray = $app['db']->fetchAll("SELECT * FROM " . self::$postTable);
+			$allPostsArray = $app['db']->fetchAll("SELECT * FROM '$table' order by creado asc" );
 
 			foreach ($allPostsArray as $onePostArray) {
 				$onePost = new Post($app);
