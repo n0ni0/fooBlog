@@ -143,6 +143,7 @@ article
     color: white;
     font-weight:normal;
     text-decoration:none;
+    
 
 }
 .boton:hover {
@@ -153,3 +154,20 @@ article
     background-image: linear-gradient(to top,#0D98FB,#1A5DB3);
     cursor: pointer;
 }
+
+.tabla{
+text-align: left;
+border-style:double;
+border-spacing:3px;
+}
+
+th {
+  border-style:solid;
+  background-color:#0F8CEC;
+}
+
+td {
+  border-style:groove;
+  background-color:#D9DADB;
+  padding:4px;
+ }
