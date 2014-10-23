@@ -21,7 +21,7 @@
 			$posts = Array();
       		$table = self::$postTable;
 
-			$allPostsArray = $app['db']->fetchAll("SELECT * FROM '$table' order by creado asc" );
+			$allPostsArray = $app['db']->fetchAll("SELECT * FROM '$table' order by creado desc" );
 
 			foreach ($allPostsArray as $onePostArray) {
 				$onePost = new Post($app);
