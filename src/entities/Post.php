@@ -20,7 +20,7 @@ class Post {
 			$this->title = $postData[0]['titulo'];
 			$this->content = $postData[0]['contenido'];
 			$this->createDate = $postData[0]['creado'];
-		
+			$this->id = $postData[0]['id'];
 		}
 	}
 
