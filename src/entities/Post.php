@@ -9,13 +9,15 @@ class Post {
 	protected $title = "";
 	protected $content;
 	protected $db = null;
+	static private $postTable = 'entrada';
 
 	public function __construct($app, $id = null) {
 		$this->db = $app['db'];
+		$table = self::$postTable;
 			
 		if (!is_null($id)) {
 			
-			$postData = $this->db->fetchAll("SELECT * FROM entrada WHERE id = ?", array($id));
+			$postData = $this->db->fetchAll("SELECT * FROM '$table' WHERE id = ?", array($id));
 
 			$this->title = $postData[0]['titulo'];
 			$this->content = $postData[0]['contenido'];
@@ -69,4 +71,11 @@ class Post {
 		$this->db->delete('entrada', array('id' => $this->getId()));
 	}
 
+
+	static public function editPostByID($id, $app){
+		$table = self::$postTable;
+
+		$post = $app['db']->fetchAssoc("SELECT * FROM '$table' WHERE id = ?", array($id));
+		return $post;
+	}
 }
