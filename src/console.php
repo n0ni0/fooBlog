@@ -20,16 +20,16 @@ $console
         
         $schema = $app['db']->getSchemaManager();
 
-        if(!$schema->tablesExist('entrada'))
+        if(!$schema->tablesExist('articles'))
         {
-        	$entrada = new Table('entrada');
-        	$entrada->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
-        	$entrada->setPrimaryKey(array('id'));
-        	$entrada->addColumn('titulo', 'string', array('length' => 255));
-        	$entrada->addColumn('contenido', 'string', array('lenght' => 5000));
-        	$entrada->addColumn('creado', 'datetime');
+        	$articles = new Table('articles');
+        	$articles->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+        	$articles->setPrimaryKey(array('id'));
+        	$articles->addColumn('title', 'string', array('length' => 255));
+        	$articles->addColumn('content', 'string', array('lenght' => 5000));
+        	$articles->addColumn('created', 'datetime');
 
-        	$schema->createTable($entrada);
+        	$schema->createTable($articles);
         	$output->writeln("<info>schema realizado con éxito.</info>");
         }
         else

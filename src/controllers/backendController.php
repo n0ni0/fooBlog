@@ -11,13 +11,15 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use repositories\PostRepository;
 use entities\Post;
+use forms\type\newPostType;
+use forms\type\editPostType;
 
 class backendController implements ControllerProviderInterface
 {
   private function addPost($app, $formData) {
       $postToAdd = new Post($app);
-      $postToAdd->setTitle($formData['titulo']);
-      $postToAdd->setContent($formData['contenido']);
+      $postToAdd->setTitle($formData['title']);
+      $postToAdd->setContent($formData['content']);
 
       $postToAdd->save();
   }
@@ -54,27 +56,8 @@ class backendController implements ControllerProviderInterface
     // -- CREAR articulo -------------------------------------------------------------------
     $backend->match('/creaArticulo/', function(Request $request) use($app)
     {
-      // creamos los campos del formulario
-      $form = $app['form.factory']->createBuilder('form')
-        ->add('titulo', 'text', array(
-            'label'     => 'Título',
-            'required'    => true,
-            'max_length'  => 255,
-            'attr'      => array(
-                'class' => 'span8',
-            ) 
-        ))
-        ->add('contenido', 'textarea', array(
-            'label'     => 'Contenido',
-            'required'    => true,
-            'max_length'  => 3000,
-            'attr'      =>array(
-                'class' => 'span8',
-                'rows'  => '10',
-            )
-        ))
-        ->getForm();
-      // Si el método es POST ...
+       $form = $app['form.factory']->create(new newPostType());
+       
       if('POST' == $request->getMethod())
       { 
         //Asocia el formulario con los datos enviados por el usuario y dispara el mecanismo de validación
@@ -85,10 +68,11 @@ class backendController implements ControllerProviderInterface
           $this->addPost($app, $form->getData()); 
         }
       }
-      // muestra el formulario
+      
       return $app['twig']->render('backend/creaArticulo.twig', array ('form' => $form->createView()));
     })
     ->bind('nuevo-articulo');
+
 
     // - EDITAR articulo -------------------------------------------------------------------------------------------------------------
     $backend->match('/{id}/editar', function(Request $request, $id) use($app)
@@ -97,35 +81,35 @@ class backendController implements ControllerProviderInterface
 
       if(!$post)
       {
-        return new RedirectResponse($app['url_generator']->generate('backend'));
+       return new RedirectResponse($app['url_generator']->generate('backend'));
       }
 
-      $form = $app['form.factory']->createBuilder('form', $post)
-        ->add('titulo', 'text', array(
-          'label'     => 'Título',
-          'required'    => true,
-          'max_length'  => 255,
-          'attr'      => array(
-            'class'   => 'span8',
-          )
-        ))
-        ->add('contenido', 'textarea', array(
-          'label'     => 'Contenido',
-          'required'    => false,
-          'max_length'  => 2000,
-          'attr'      => array(
-            'class'   => 'span8',
-            'rows'    => '10',
-          )
-        ))
-        ->add('creado', 'text', array(
-          'label'       => 'Fecha creación',
-          'read_only'   => 'true',
-          'attr'      => array(
-            'class'   => 'span8',
-          )
-        ))
-        ->getForm();
+    $form = $app['form.factory']->createBuilder('form', $post)
+      ->add('title', 'text', array(
+        'label'     => 'Título',
+        'required'    => true,
+        'max_length'  => 255,
+        'attr'      => array(
+          'class'   => 'span8',
+        )
+      ))
+      ->add('content', 'textarea', array(
+        'label'     => 'Contenido',
+        'required'    => false,
+        'max_length'  => 2000,
+        'attr'      => array(
+          'class'   => 'span8',
+          'rows'    => '10',
+        )
+      ))
+      ->add('created', 'text', array(
+        'label'       => 'Fecha creación',
+        'read_only'   => 'true',
+        'attr'      => array(
+          'class'   => 'span8',
+        )
+      ))
+      ->getForm();
 
       if('POST' == $request->getMethod())
       {
@@ -134,8 +118,8 @@ class backendController implements ControllerProviderInterface
         {
           $post = $form->getData();
 
-          $app['db']->update('entrada',
-            array('titulo' => $post['titulo'], 'contenido' => $post['contenido']),
+          $app['db']->update('articles',
+            array('title' => $post['title'], 'content' => $post['content']),
             array('id' => $id)
           );
 
@@ -143,7 +127,7 @@ class backendController implements ControllerProviderInterface
         }
       }
 
-      return $app['twig']->render('backend/editaArticulo.twig', array('articulo' => $post, 'form' => $form->createView()));
+      return $app['twig']->render('backend/editaArticulo.twig', array('article' => $post, 'form' => $form->createView()));
 
     })
     ->bind('editar-articulo');
@@ -163,5 +147,4 @@ class backendController implements ControllerProviderInterface
     return $backend;
   }
 }
-
 ?>

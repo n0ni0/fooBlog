@@ -6,7 +6,7 @@
 
 	class PostRepository {
 
-		static private $postTable = 'entrada';
+		static private $postTable = 'articles';
 
 		/**
 		* Get all stored posts
@@ -21,14 +21,14 @@
 			$posts = Array();
       		$table = self::$postTable;
 
-			$allPostsArray = $app['db']->fetchAll("SELECT * FROM '$table' order by creado desc" );
+			$allPostsArray = $app['db']->fetchAll("SELECT * FROM $table order by created desc" );
 
 			foreach ($allPostsArray as $onePostArray) {
 				$onePost = new Post($app);
-				$onePost->setTitle($onePostArray['titulo'])
-						->setCreateDate($onePostArray['creado'])
+				$onePost->setTitle($onePostArray['title'])
+						->setCreateDate($onePostArray['created'])
 						->setAuthor("Antonio Jiménez")
-						->setContent($onePostArray['contenido'])
+						->setContent($onePostArray['content'])
 						->setId($onePostArray['id']);
 				// Inserta uno o más elementos al final de un array    $array[] = $var;
 				array_push($posts, $onePost);

@@ -37,10 +37,13 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 // -- DOCTRINE ---------------------------------------------------------------------------------------
 $app->register(new DoctrineServiceProvider());
 $app['db.options'] = array(
-	'driver'	=> 'pdo_sqlite',
-	'path'		=> __DIR__.'/../config/schema.sqlite',
+  'driver'  => 'pdo_mysql',
+  'dbname'  => 'blog',
+  'host'    => 'localhost',
+  'user'    => 'root',
+  'password'=> 'root',
+  'charset' => 'utf8',
 );
-
 
 
 // -- FIREWALL ----------------------------------------------------------------------------------------

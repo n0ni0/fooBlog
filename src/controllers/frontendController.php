@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use repositories\PostRepository;
 use entities\Post;
+use entities\Task;
+use forms\type\contactType;
 
 class frontendController implements ControllerProviderInterface
 {
@@ -46,45 +48,14 @@ class frontendController implements ControllerProviderInterface
 
 
         // -- CONTACTO -------------------------------------------------------------------------------------------------------
-        $frontend->match('/contacto/', function (Request $request) use ($app)
+        $frontend->match('/contacto', function(Request $request) use ($app) 
         {
             $posts = PostRepository::getAllPosts($app);
 
-            $form = $app['form.factory']->createBuilder('form')
-                ->add('nombre', 'text', array(
-                    'label'         => 'Nombre',
-                    'required'      => true,
-                    'max_length'    => 100,
-                    'attr'          => array(
-                        'class'     => 'span8',
-                        )
-                ))
-                ->add('correo', 'email', array()
-                )
-                ->add('asunto', 'text', array(
-                    'label'         => 'Asunto',
-                    'required'      => true,
-                    'max_length'    => 200,
-                    'attr'          => array(
-                        'class'     => 'span8',
-                        )
-                ))
-                ->add('mensaje', 'textarea', array(
-                    'label'         => 'Mensaje',
-                    'required'      => true,
-                    'max_length'    => 2500,
-                    'attr'          => array(
-                        'class'     => 'span8',
-                        'rows'      => '10'
-                        )
-                ))
-                ->getForm();
+            $form = $app['form.factory']->create(new contactType($posts));
+            $form->bind($request);
 
-            if('POST' == $request->getMethod()) 
-            {
-                $form->bind($request);
-
-                if($form->isValid())
+            if($form->isValid())
                 {
                     $datos = $form->getData();
                     // -- Preparación del email y del envio -------------------------------
@@ -93,32 +64,39 @@ class frontendController implements ControllerProviderInterface
                     ->setFrom(array('ajimenez.bf@gmail.com' => 'noreply@gmail.com'))
                     ->setTo(array('ajimenez.bf@ono.com'))
                     ->setBody($app['twig']->render('frontend/email.twig',
-                        array('nombre'    => $datos['nombre'],
-                              'correo'    => $datos['correo'],
-                              'asunto'    => $datos['asunto'],
-                              'mensaje'   => $datos['mensaje'],
+                        array('nombre'    => $datos['name'],
+                              'correo'    => $datos['mail'],
+                              'asunto'    => $datos['title'],
+                              'mensaje'   => $datos['content'],
 
                         )), 'text/html'
-                        ));
+                    ));
+
+                     return new RedirectResponse($app['url_generator']->generate('gracias'));
                 }
+
+            $form = $app['form.factory']->create(new contactType());
             // -- Vista del formulario antes de enviar el correo
-            return $app['twig']->render('frontend/contacto.twig', array(
-                'mensaje' => 'Mensaje enviado, te responderemos lo antes posible.',
-                'form'    => $form->createView(),
-                'articles' => $posts,
-                ));
-
-            }
-
-            // -- Vista del formulario después de enviar el correo
             return $app['twig']->render('frontend/contacto.twig', array(
                 'mensaje'  => 'Formulario de contacto:',
                 'form'     => $form->createView(),
                 'articles' => $posts,
-            ));    
-
+                ));
         })
-        ->bind('contacto');
+        -> bind('contacto');
+
+
+
+        // -- CONTACTO ENVIADO ---------------------------------------------------------------------------------------------------------
+        $frontend->get('/Gracias/', function () use ($app)
+        {
+            $posts = PostRepository::getAllPosts($app);
+
+            return $app['twig']->render('frontend/gracias.twig', array(
+                'articles'   => $posts,
+            ));
+        })
+        ->bind('gracias');
 
 
 
@@ -135,8 +113,8 @@ class frontendController implements ControllerProviderInterface
         })
         ->bind('posts');
 
+        
         return $frontend;
         }
     }
-
 ?>

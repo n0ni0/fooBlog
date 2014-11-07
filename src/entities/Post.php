@@ -9,7 +9,7 @@ class Post {
 	protected $title = "";
 	protected $content;
 	protected $db = null;
-	static private $postTable = 'entrada';
+	static private $postTable = 'articles';
 
 	public function __construct($app, $id = null) {
 		$this->db = $app['db'];
@@ -17,11 +17,11 @@ class Post {
 			
 		if (!is_null($id)) {
 			
-			$postData = $this->db->fetchAll("SELECT * FROM '$table' WHERE id = ?", array($id));
+			$postData = $this->db->fetchAll("SELECT * FROM $table WHERE id = ?", array($id));
 
-			$this->title = $postData[0]['titulo'];
-			$this->content = $postData[0]['contenido'];
-			$this->createDate = $postData[0]['creado'];
+			$this->title = $postData[0]['title'];
+			$this->content = $postData[0]['content'];
+			$this->createDate = $postData[0]['created'];
 			$this->id = $postData[0]['id'];
 		}
 	}
@@ -54,28 +54,28 @@ class Post {
 
 
 	public function save() {
-		$postData['titulo'] = $this->title;
-		$postData['contenido'] = $this->content;
+		$postData['title'] = $this->title;
+		$postData['content'] = $this->content;
 
 		if (!is_null($this->getId()) ) {
 			$postData['id'] = $this->getId();
-			$this->db->update('entrada', "id = ?", $postData);
+			$this->db->update('articles', "id = ?", $postData);
 		} else {
-			$postData['creado'] = date("Y-m-d H:i:s");
-			$this->db->insert('entrada', $postData);
+			$postData['created'] = date("Y-m-d H:i:s");
+			$this->db->insert('articles', $postData);
 		}
 	}
 
 
 	public function delete() {
-		$this->db->delete('entrada', array('id' => $this->getId()));
+		$this->db->delete('articles', array('id' => $this->getId()));
 	}
 
 
 	static public function editPostByID($id, $app){
 		$table = self::$postTable;
 
-		$post = $app['db']->fetchAssoc("SELECT * FROM '$table' WHERE id = ?", array($id));
+		$post = $app['db']->fetchAssoc("SELECT * FROM $table WHERE id = ?", array($id));
 		return $post;
 	}
 }
