@@ -15,5 +15,5 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
     // -- Backend controllers --------------------------------------------------------------
     $app->mount('/admin',  new backendController());
-     
+
 ?>
