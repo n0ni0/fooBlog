@@ -1,0 +1,19 @@
+{% extends '/frontend/layout.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block article %}
+  <form action="{{ path('admin_login_check') }}" method="post">
+    {{ error }}
+    <h2>Introduce tu usuario y contraseña:</h2>
+    Usuario:<input type="text" name="_username" value="{{ last_username }}" />
+    Contraseña: <input type="password" name="_password" value="" /></br>
+    <input type="submit" value="Enviar"/>
+  </form>
+
+  <h2>Regístrate</h2>
+
+{% endblock %}
+
+{% block aside %}
+{% endblock %}
