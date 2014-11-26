@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace controllers;
 
@@ -12,7 +12,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use repositories\PostRepository;
 use entities\Post;
 use entities\Task;
+use entities\Users;
 use forms\type\contactType;
+use forms\type\registerPostType;
+
 
 class frontendController implements ControllerProviderInterface
 {
@@ -21,13 +24,45 @@ class frontendController implements ControllerProviderInterface
 
         $frontend = $app['controllers_factory'];
 
+        //-- LOGIN ---------------------------------------------------------------------------------------------------------
+        $frontend->get('/login', function(Request $request) use ($app)
+        {
+          return $app['twig']->render('/frontend/login.twig', array(
+            'error'          => $app['security.last_error']($request),
+            'last_username'  => $app['session']->get('_security.last_username'),
+          ));
+        })
+        ->bind('login');
+
+
+        //-- REGISTER -------------------------------------------------------------------------------------------------------
+        $frontend->match('/register', function (Request $request) use($app)
+        {
+          $form = $app['form.factory']->create(new registerPostType());
+          if('POST' == $request->getMethod())
+          {
+           $form->bind($request);
+           if($form->isValid())
+           {
+             $user = new Users($app);
+             $user->addUser($form->getData());
+           }
+          }
+          return $app['twig']->render('/frontend/register.twig', array(
+            'mensaje'    => 'Formulario de registro:',
+            'form'       => $form->createView()
+          ));
+        })
+        ->bind('register');
+
+
         // -- PORTADA con artículos -----------------------------------------------------------------------------------------
         $frontend->get('/', function () use ($app) {
 
             $posts = PostRepository::getAllPosts($app);
 
             return $app['twig']->render('frontend/index.twig', array(
-            'articles'   => $posts,
+              'articles'   => $posts,
             ));
         })
         ->bind('portada');

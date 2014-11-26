@@ -10,10 +10,10 @@ use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SecurityServiceProvider; // firewall
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder; // firewall
-use Silex\Provider\TranslationServiceProvider; 
+use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
-
-
+use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\RememberMeServiceProvider;
 
 $app = new Application();
 
@@ -22,6 +22,11 @@ $app->register(new ValidatorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new FormServiceProvider()); // necesario para formularios
 $app->register(new TranslationServiceProvider());  // necesario para formularios
+
+
+$app->register(new Silex\Provider\SessionServiceProvider(), array(
+  'session.storage.save.path' => __DIR__.'/../var/cache',
+));
 
 
 // -- TWIG -------------------------------------------------------------------------------------------
@@ -49,20 +54,24 @@ $app['db.options'] = array(
 // -- FIREWALL ----------------------------------------------------------------------------------------
 $app->register(new SecurityServiceProvider());
 $app['security.encoder.digest'] = $app->share(function ($app) {
-	// algoritmo SHA-1 con 1 iteración y sin codificar en base64
-	return new MessageDigestPasswordEncoder('sha1', false, 1);
+  return new MessageDigestPasswordEncoder('sha1', false, 1);
 });
 
 $app['security.firewalls'] = array(
-	'admin' => array(
-		'pattern'	=> '^/admin', // el firewall abarca todas las páginas /admin
-		'http'		=> true,  // usa el menu de autenticación del navegador
-		'users'		=> array(
-			// user: admin; password 1234 -- la contraseña debe ir encriptada por seguridad para no verla en este archivo
-			'admin' => array('ROLE_ADMIN', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220' ),
-		),
-	),
+  'admin'         => array(
+    'pattern'     => '^/admin',
+    'form'        => array('login_path'  => '/login', 'check_path' => '/admin/login_check'),
+    'logout'      => array('logout_path' => '/admin/logout'),
+    'remember_me' => array('key'         => '123456789', 'always_remember_me' => true ),
+    'users'       => $app->share(function() use ($app)
+    {
+      return new users\userProvider($app['db']);
+    }),
+ ),
 );
+
+
+$app->register(new Silex\Provider\RememberMeServiceProvider());
 
 // -- CORREO ---------------------------------------------------------------------------------------------
 $app->register(new SwiftmailerServiceProvider());

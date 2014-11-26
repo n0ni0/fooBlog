@@ -1,0 +1,25 @@
+{% extends '/frontend/layout.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block article %}
+  <div id="primary-content" class="clearfix">
+
+  <div id="aviso-formulario">
+    {{ mensaje }}
+  </div>
+
+    <form action="{{ path('register') }}" method="post" >
+      {{ form_widget(form) }}
+      <input type="submit" name="submit" value="Enviar">
+    </form>
+    </div>
+{% endblock %}
+
+{% block aside %}
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+
+{% endblock %}

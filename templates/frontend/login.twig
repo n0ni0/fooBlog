@@ -6,12 +6,20 @@
   <form action="{{ path('admin_login_check') }}" method="post">
     {{ error }}
     <h2>Introduce tu usuario y contraseña:</h2>
-    Usuario:<input type="text" name="_username" value="{{ last_username }}" />
-    Contraseña: <input type="password" name="_password" value="" /></br>
+    <label for"username"> Usuario</label>
+    <input type="text" name="_username" value="{{ last_username }}" />
+
+    <label for"password"> Contraseña</label>
+    <input type="password" name="_password" value="" /></br>
+    
+    <input type="checkbox" id="remember_me" name="_remember_me" checked />
+    <label for="remember_me">Seguir logueado</label><br>
+
     <input type="submit" value="Enviar"/>
   </form>
 
-  <h2>Regístrate</h2>
+  <br><h2> <a href="{{ path('register') }}"><li>Regístrate</li></a> </h2>
+
 
 {% endblock %}
 

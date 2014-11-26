@@ -30,12 +30,34 @@ $console
         	$articles->addColumn('created', 'datetime');
 
         	$schema->createTable($articles);
-        	$output->writeln("<info>schema realizado con éxito.</info>");
+        	$output->writeln("<info>schema articles created.</info>");
         }
         else
         {
-        	$output->writeln("<info>El schema ya existe.</info>");
+        	$output->writeln("<info>The schema articles already exists.</info>");
         }
+
+        if(!$schema->tablesExist('users'))
+        {
+          $users = new Table ('users');
+          $users->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+          $users->setPrimaryKey(array('id'));
+          $users->addColumn('name', 'string', array('length' => 50 ));
+          $users->addColumn('surnames', 'string', array('length' => 50));
+          $users->addColumn('mail', 'string');
+          $users->addColumn('username', 'string', array('length' => 32));
+          $users->addUniqueIndex(array('username'));
+          $users->addColumn('password', 'string', array('length' => 255));
+          $users->addColumn('roles', 'string', array('length' => 255));
+
+          $schema->createTable($users);
+          $output->writeln("<info>schema users created.</info>");
+        }
+        else
+        {
+          $output->writeln("<info>The schema users already exists</info>");
+        }
+
     })
 ;
 
