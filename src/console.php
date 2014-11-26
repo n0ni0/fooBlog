@@ -20,22 +20,44 @@ $console
         
         $schema = $app['db']->getSchemaManager();
 
-        if(!$schema->tablesExist('entrada'))
+        if(!$schema->tablesExist('articles'))
         {
-        	$entrada = new Table('entrada');
-        	$entrada->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
-        	$entrada->setPrimaryKey(array('id'));
-        	$entrada->addColumn('titulo', 'string', array('length' => 255));
-        	$entrada->addColumn('contenido', 'string', array('lenght' => 5000));
-        	$entrada->addColumn('creado', 'datetime');
+        	$articles = new Table('articles');
+        	$articles->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+        	$articles->setPrimaryKey(array('id'));
+        	$articles->addColumn('title', 'string', array('length' => 255));
+        	$articles->addColumn('content', 'string', array('lenght' => 5000));
+        	$articles->addColumn('created', 'datetime');
 
-        	$schema->createTable($entrada);
-        	$output->writeln("<info>schema realizado con éxito.</info>");
+        	$schema->createTable($articles);
+        	$output->writeln("<info>schema articles created.</info>");
         }
         else
         {
-        	$output->writeln("<info>El schema ya existe.</info>");
+        	$output->writeln("<info>The schema articles already exists.</info>");
         }
+
+        if(!$schema->tablesExist('users'))
+        {
+          $users = new Table ('users');
+          $users->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+          $users->setPrimaryKey(array('id'));
+          $users->addColumn('name', 'string', array('length' => 50 ));
+          $users->addColumn('surnames', 'string', array('length' => 50));
+          $users->addColumn('mail', 'string');
+          $users->addColumn('username', 'string', array('length' => 32));
+          $users->addUniqueIndex(array('username'));
+          $users->addColumn('password', 'string', array('length' => 255));
+          $users->addColumn('roles', 'string', array('length' => 255));
+
+          $schema->createTable($users);
+          $output->writeln("<info>schema users created.</info>");
+        }
+        else
+        {
+          $output->writeln("<info>The schema users already exists</info>");
+        }
+
     })
 ;
 

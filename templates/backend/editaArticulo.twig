@@ -5,7 +5,7 @@
 {% block article %}
 	<div id="primary-content" class="clearfix">
     <h2>Crear nuevo articulo</h2>
-    <form action="{{ path('editar-articulo', {'id': articulo.id}) }}" method="post">
+    <form action="{{ path('editar-articulo', {'id': article.id}) }}" method="post">
     	{{ form_widget(form) }}
     	<input type="submit" name="submit" value="Guardar">
     </form>
@@ -14,8 +14,7 @@
 
 {% block javascripts %}
 {{ parent() }}
-<!-- No funciona con ckeditor, al enviar el formulario dice rellene este campo
-	<script>
-    CKEDITOR.replace( 'form[contenido]' );
+	<!--<script>
+    CKEDITOR.replace( 'form[content]' );
 </script> -->
 {% endblock %}

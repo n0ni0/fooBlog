@@ -20,16 +20,3 @@
         <h1>Aún no hay artículos creados</h1>
     {% endfor %}
 {% endblock %}
-
-{% block aside %}
-    {{ parent() }}
-   
-   {% for article in articles %}
-       <div class="post">
-          <a href="{{ path('posts', { 'id': article.id }) }}"><h1>{{ article.Title }}</h1></a>
-       </div>
-    {% else %}
-        <h1>Aún no hay artículos creados</h1>
-    {% endfor %}
-{% endblock %}
-

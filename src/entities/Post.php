@@ -8,8 +8,23 @@ class Post {
 	protected $createDate = "";
 	protected $title = "";
 	protected $content;
+	protected $db = null;
+	static private $postTable = 'articles';
 
-	public function __construct() {}
+	public function __construct($app, $id = null) {
+		$this->db = $app['db'];
+		$table = self::$postTable;
+			
+		if (!is_null($id)) {
+			
+			$postData = $this->db->fetchAll("SELECT * FROM $table WHERE id = ?", array($id));
+
+			$this->title = $postData[0]['title'];
+			$this->content = $postData[0]['content'];
+			$this->createDate = $postData[0]['created'];
+			$this->id = $postData[0]['id'];
+		}
+	}
 
 	public function setAuthor($authorName) { 
 		$this->author = $authorName;
@@ -37,4 +52,30 @@ class Post {
 
 	public function getId() { return $this->id; }
 
+
+	public function save() {
+		$postData['title'] = $this->title;
+		$postData['content'] = $this->content;
+
+		if (!is_null($this->getId()) ) {
+			$postData['id'] = $this->getId();
+			$this->db->update('articles', "id = ?", $postData);
+		} else {
+			$postData['created'] = date("Y-m-d H:i:s");
+			$this->db->insert('articles', $postData);
+		}
+	}
+
+
+	public function delete() {
+		$this->db->delete('articles', array('id' => $this->getId()));
+	}
+
+
+	static public function editPostByID($id, $app){
+		$table = self::$postTable;
+
+		$post = $app['db']->fetchAssoc("SELECT * FROM $table WHERE id = ?", array($id));
+		return $post;
+	}
 }

@@ -8,30 +8,29 @@
 {% block article %}
 	<a class="boton" title="Botón con HTM5 y CSS3" href="{{ path('nuevo-articulo') }}">Crear nuevo artículo</a>
 
-   <h2>Artículos publicados</h2>
    <table class="tabla">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th class="span3">Título</th>
-                    <th>Contenido</th>
+                    <th>content</th>
                     <th class="span3">Fecha publicación</th>
                     <th class="span2">Acciones</th>
                 </tr>
             </thead>
 
             <tbody>
-             {% for articulo in articulos %}
+             {% for article in articles %}
                 <tr>
-                    <td>{{ articulo.id }}</td>
-                    <td>{{ articulo.titulo }}</td>
-                    <td>{{ articulo.contenido | striptags | truncate(160) | raw }}</td>
-                    <td>{{ articulo.creado | date('d/m/Y H:M:s') }}</td>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.content | striptags | truncate(160) | raw }}</td>
+                    <td>{{ article.created | date('d/m/Y H:M:s') }}</td>
                     <td>
-                        <a href="{{ path('editar-articulo', { 'id': articulo.id }) }}">
+                        <a href="{{ path('editar-articulo', { 'id': article.id }) }}">
                             Editar
                         </a> | 
-                        <a href="{{ path('borrar-articulo', { 'id': articulo.id }) }}">
+                        <a href="{{ path('borrar-articulo', { 'id': article.id }) }}">
                             Borrar
                         </a>
                     </td>
