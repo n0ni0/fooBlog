@@ -1,15 +1,15 @@
 <?php
 
 use Silex\Application;
-use Silex\Provider\DoctrineServiceProvider; // base de datos
+use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\FormServiceProvider;
-use Silex\Provider\TwigServiceProvider; // Twig
+use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
-use Silex\Provider\SecurityServiceProvider; // firewall
-use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder; // firewall
+use Silex\Provider\SecurityServiceProvider;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
@@ -20,26 +20,21 @@ $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
-$app->register(new FormServiceProvider()); // necesario para formularios
-$app->register(new TranslationServiceProvider());  // necesario para formularios
-
+$app->register(new FormServiceProvider());
+$app->register(new TranslationServiceProvider());
 
 $app->register(new Silex\Provider\SessionServiceProvider(), array(
   'session.storage.save.path' => __DIR__.'/../var/cache',
 ));
 
 
-// -- TWIG -------------------------------------------------------------------------------------------
 $app->register(new TwigServiceProvider());
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
-    // add custom globals, filters, tags, ...
-	$twig->addExtension(new Twig_Extensions_Extension_Text($app));
-	
+  $twig->addExtension(new Twig_Extensions_Extension_Text($app));
     return $twig;
 }));
 
 
-// -- DOCTRINE ---------------------------------------------------------------------------------------
 $app->register(new DoctrineServiceProvider());
 $app['db.options'] = array(
   'driver'  => 'pdo_mysql',
@@ -51,7 +46,6 @@ $app['db.options'] = array(
 );
 
 
-// -- FIREWALL ----------------------------------------------------------------------------------------
 $app->register(new SecurityServiceProvider());
 $app['security.encoder.digest'] = $app->share(function ($app) {
   return new MessageDigestPasswordEncoder('sha1', false, 1);
@@ -73,7 +67,6 @@ $app['security.firewalls'] = array(
 
 $app->register(new Silex\Provider\RememberMeServiceProvider());
 
-// -- CORREO ---------------------------------------------------------------------------------------------
 $app->register(new SwiftmailerServiceProvider());
 $app['swiftmailer.options'] = array(
 	'host'		 => 'smtp.gmail.com',

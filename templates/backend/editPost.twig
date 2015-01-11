@@ -1,11 +1,11 @@
-{% extends 'backend/layout.twig' %}
+{% extends '/backend/layout.twig' %}
 
 {% block title %}{% endblock %}
 
 {% block article %}
 	<div id="primary-content" class="clearfix">
     <h2>Crear nuevo articulo</h2>
-    <form action="{{ path('nuevo-articulo') }}" method="post">
+    <form action="{{ path('editPost', {'id': article.id}) }}" method="post">
     	{{ form_widget(form) }}
     	<input type="submit" name="submit" value="Guardar">
     </form>
@@ -14,5 +14,7 @@
 
 {% block javascripts %}
 {{ parent() }}
-
+	<!--<script>
+    CKEDITOR.replace( 'form[content]' );
+</script> -->
 {% endblock %}

@@ -6,7 +6,7 @@
 	
 
 {% block article %}
-	<a class="boton" title="Botón con HTM5 y CSS3" href="{{ path('nuevo-articulo') }}">Crear nuevo artículo</a>
+	<a class="boton" title="Botón con HTM5 y CSS3" href="{{ path('newPost') }}">Crear nuevo artículo</a>
 
    <table class="tabla">
             <thead>
@@ -27,10 +27,10 @@
                     <td>{{ article.content | striptags | truncate(130) | raw }}</td>
                     <td>{{ article.createDate | date('d/m/Y H:M:s') }}</td>
                     <td>
-                        <a href="{{ path('editar-articulo', { 'id': article.id }) }}">
+                        <a href="{{ path('editPost', { 'id': article.id }) }}">
                             Editar
                         </a> | 
-                        <a href="{{ path('borrar-articulo', { 'id': article.id }) }}">
+                        <a href="{{ path('deletePost', { 'id': article.id }) }}">
                             Borrar
                         </a>
                     </td>

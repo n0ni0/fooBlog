@@ -19,137 +19,113 @@ use forms\type\registerPostType;
 
 class frontendController implements ControllerProviderInterface
 {
-    public function connect(Application $app)
+  public function connect(Application $app)
+  {
+    $frontend = $app['controllers_factory'];
+
+    $frontend->get('/login', function(Request $request) use ($app)
     {
-
-        $frontend = $app['controllers_factory'];
-
-        //-- LOGIN ---------------------------------------------------------------------------------------------------------
-        $frontend->get('/login', function(Request $request) use ($app)
-        {
-          return $app['twig']->render('/frontend/login.twig', array(
-            'error'          => $app['security.last_error']($request),
-            'last_username'  => $app['session']->get('_security.last_username'),
-          ));
-        })
-        ->bind('login');
+      return $app['twig']->render('/frontend/login.twig', array(
+        'error'          => $app['security.last_error']($request),
+        'last_username'  => $app['session']->get('_security.last_username'),
+        ));
+    })
+    ->bind('login');
 
 
-        //-- REGISTER -------------------------------------------------------------------------------------------------------
-        $frontend->match('/register', function (Request $request) use($app)
-        {
-          $form = $app['form.factory']->create(new registerPostType());
-          if('POST' == $request->getMethod())
+    $frontend->match('/register', function (Request $request) use($app)
+    {
+      $form = $app['form.factory']->create(new registerPostType());
+      if('POST' == $request->getMethod())
+      {
+        $form->bind($request);
+          if($form->isValid())
           {
-           $form->bind($request);
-           if($form->isValid())
-           {
-             $user = new Users($app);
-             $user->addUser($form->getData());
-           }
+           $user = new Users($app);
+           $user->addUser($form->getData());
           }
-          return $app['twig']->render('/frontend/register.twig', array(
-            'mensaje'    => 'Formulario de registro:',
-            'form'       => $form->createView()
-          ));
-        })
-        ->bind('register');
+      }
+       return $app['twig']->render('/frontend/register.twig', array(
+         'message'   => 'Formulario de registro:',
+        'form'       => $form->createView()
+        ));
+    })
+    ->bind('register');
 
 
-        // -- PORTADA con artículos -----------------------------------------------------------------------------------------
-        $frontend->get('/', function () use ($app) {
+    $frontend->get('/', function () use ($app)
+    {
+      $posts = PostRepository::getAllPosts($app);
 
-            $posts = PostRepository::getAllPosts($app);
-
-            return $app['twig']->render('frontend/index.twig', array(
-              'articles'   => $posts,
-            ));
-        })
-        ->bind('portada');
-
-
-        // -- AYUDA ---------------------------------------------------------------------------------------------------------
-        $frontend->get('/ayuda/', function () use ($app)
-        {
-
-            $posts = PostRepository::getAllPosts($app);
-
-            return $app['twig']->render('frontend/ayuda.twig', array(
-                'articles'   => $posts,
-            ));
-        })
-        ->bind('ayuda');
+      return $app['twig']->render('frontend/index.twig', array(
+        'articles'   => $posts,
+        ));
+    })
+    ->bind('home');
 
 
+    $frontend->get('/help/', function () use ($app)
+    {
+      $posts = PostRepository::getAllPosts($app);
 
-        // -- CONTACTO -------------------------------------------------------------------------------------------------------
-        $frontend->match('/contacto', function(Request $request) use ($app) 
-        {
-            $posts = PostRepository::getAllPosts($app);
-
-            $form = $app['form.factory']->create(new contactType($posts));
-            $form->bind($request);
-
-            if($form->isValid())
-                {
-                    $datos = $form->getData();
-                    // -- Preparación del email y del envio -------------------------------
-                    $app['mailer']->send(\Swift_Message::newInstance()
-                    ->setSubject('Formulario de conctacto blog silex')
-                    ->setFrom(array('ajimenez.bf@gmail.com' => 'noreply@gmail.com'))
-                    ->setTo(array('ajimenez.bf@ono.com'))
-                    ->setBody($app['twig']->render('frontend/email.twig',
-                        array('nombre'    => $datos['name'],
-                              'correo'    => $datos['mail'],
-                              'asunto'    => $datos['title'],
-                              'mensaje'   => $datos['content'],
-
-                        )), 'text/html'
-                    ));
-
-                     return new RedirectResponse($app['url_generator']->generate('gracias'));
-                }
-
-            $form = $app['form.factory']->create(new contactType());
-            // -- Vista del formulario antes de enviar el correo
-            return $app['twig']->render('frontend/contacto.twig', array(
-                'mensaje'  => 'Formulario de contacto:',
-                'form'     => $form->createView(),
-                'articles' => $posts,
-                ));
-        })
-        -> bind('contacto');
+      return $app['twig']->render('frontend/help.twig', array(
+        'articles'   => $posts,
+        ));
+    })
+    ->bind('help');
 
 
 
-        // -- CONTACTO ENVIADO ---------------------------------------------------------------------------------------------------------
-        $frontend->get('/Gracias/', function () use ($app)
-        {
-            $posts = PostRepository::getAllPosts($app);
+    $frontend->match('/contact', function(Request $request) use ($app) 
+    {
+      $posts = PostRepository::getAllPosts($app);
 
-            return $app['twig']->render('frontend/gracias.twig', array(
-                'articles'   => $posts,
-            ));
-        })
-        ->bind('gracias');
+      $form = $app['form.factory']->create(new contactType($posts));
+      $form->bind($request);
+
+      if($form->isValid())
+      {
+        $contact = new Task();
+        $contact->addContact($app, $form->getData());
+        return new RedirectResponse($app['url_generator']->generate('thanks'));
+      }
+
+      $form = $app['form.factory']->create(new contactType());
+
+      return $app['twig']->render('frontend/contact.twig', array(
+        'message'  => 'Formulario de contacto:',
+        'form'     => $form->createView(),
+        'articles' => $posts,
+        ));
+    })
+    -> bind('contact');
 
 
+    $frontend->get('/thanks/', function () use ($app)
+    {
+      $posts = PostRepository::getAllPosts($app);
 
-        // -- POSTS ------------------------------------------------------------------------------------
-        $frontend->get('/articulo/{id}', function($id) use ($app)
-        {
-            $currentPost = new Post($app, $id);
-            $latestPosts = PostRepository::getAllPosts($app);
+      return $app['twig']->render('frontend/thanks.twig', array(
+        'articles'   => $posts,
+        ));
+    })
+    ->bind('thanks');
 
-            return $app['twig']->render('frontend/post.twig', array(
-               'currentPost'    => $currentPost,
-               'articles'       => $latestPosts,
-            ));
-        })
-        ->bind('posts');
 
-        
-        return $frontend;
-        }
-    }
+    $frontend->get('/article/{id}', function($id) use ($app)
+    {
+      $currentPost = new Post($app, $id);
+      $latestPosts = PostRepository::getAllPosts($app);
+
+      return $app['twig']->render('frontend/post.twig', array(
+        'currentPost'    => $currentPost,
+        'articles'       => $latestPosts,
+        ));
+    })
+    ->bind('posts');
+
+
+  return $frontend;
+  }
+}
 ?>

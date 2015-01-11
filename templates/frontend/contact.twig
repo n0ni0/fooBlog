@@ -6,10 +6,10 @@
 	<div id="primary-content" class="clearfix">
 
 	<div id="aviso-formulario">
-		{{ mensaje }}
+		{{ message }}
 	</div>
 
-    <form action="{{ path('contacto') }}" method="post" >
+    <form action="{{ path('contact') }}" method="post" >
     	{{ form_widget(form) }}
     	<input type="submit" name="submit" value="Enviar">
     </form>
@@ -19,6 +19,6 @@
 {% block javascripts %}
 {{ parent() }}
 	 <script>
-    CKEDITOR.replace( 'form[mensaje]' );
+    CKEDITOR.replace( 'form[message]' );
 </script> 
 {% endblock %}

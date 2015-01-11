@@ -19,7 +19,6 @@ class Users
 
      $this->db = $app['db']; 
     // $userData = $this->db->fetchall("SELECT * FROM $table");
- 
   }
 
   public function setName($name)
@@ -107,13 +106,6 @@ class Users
     $this->db->insert('users',$form);
   }
 
-  public function nameExists($name)
-  {
-    
-  }
-
-
 
 }
 
-?>

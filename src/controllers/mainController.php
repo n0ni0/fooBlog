@@ -10,10 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-    // -- Frontend controllers -------------------------------------------------------------
-    $app->mount('/', new frontendController());
-
-    // -- Backend controllers --------------------------------------------------------------
-    $app->mount('/admin',  new backendController());
+  $app->mount('/', new frontendController());
+  $app->mount('/admin',  new backendController());
 
 ?>

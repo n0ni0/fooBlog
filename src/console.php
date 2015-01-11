@@ -9,13 +9,10 @@ use Doctrine\DBAL\Schema\Table;
 
 $console = new Application('Blog', '1.0');
 
-//$console->getDefinition()->addOption(new InputOption('--env', '-e', InputOption::VALUE_REQUIRED, 'The Environment name.', 'dev'));
-//$console->setDispatcher($app['dispatcher']);
-
 $console
-    ->register('crear_base_datos')
+    ->register('create_bd')
     ->setDefinition(array())
-    ->setDescription('Crea las tablas adecuadas en la base de datos. Si ya existía la tabla, NO se borra ')
+    ->setDescription('Create tables. If exists dont remove ')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
         
         $schema = $app['db']->getSchemaManager();
