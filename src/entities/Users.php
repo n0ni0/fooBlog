@@ -2,6 +2,8 @@
 
 namespace entities;
 
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+
 class Users
 {
   protected $id;
@@ -11,14 +13,11 @@ class Users
   protected $name;
   protected $surnames;
   protected $mail;
-  //static private $userTable = 'users';
+  static private $userTable = 'users';
 
   public function __construct($app)
   {
-    //$table = self::$userTable;
-
      $this->db = $app['db']; 
-    // $userData = $this->db->fetchall("SELECT * FROM $table");
   }
 
   public function setName($name)
@@ -103,6 +102,19 @@ class Users
 
   public function addUser($form)
   {
+    $table = self::$userTable;
+    $numRows = $this->db->fetchAssoc("
+      SELECT *
+      FROM   $table
+      WHERE  username = ? 
+      OR     mail = ?",
+       array($form['username'],
+             $form['mail']));
+
+    if($numRows)
+    {
+      throw new UsernameNotFoundException(sprintf('El usuario o el correo ya existe'));
+    }
     $this->db->insert('users',$form);
   }
 
