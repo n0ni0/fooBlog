@@ -87,7 +87,7 @@ class frontendController implements ControllerProviderInterface
       {
         $contact = new Task();
         $contact->addContact($app, $form->getData());
-        return new RedirectResponse($app['url_generator']->generate('thanks'));
+        $contact->thanksForContact($app);
       }
 
       $form = $app['form.factory']->create(new contactType());
