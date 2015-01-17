@@ -2,6 +2,8 @@
 
 namespace entities;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 class Task
 {
   protected $name;
@@ -68,6 +70,12 @@ class Task
                          )),
                   'text/html'
                     ));
+  }
+
+
+  public function thanksForContact($app)
+  {
+     return new RedirectResponse($app['url_generator']->generate('thanks'));
   }
 
 }
