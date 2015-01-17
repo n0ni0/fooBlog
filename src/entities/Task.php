@@ -65,8 +65,8 @@ class Task
                   ->setBody($app['twig']->render('frontend/email.twig',
                      array('name'    => $form['name'],
                            'mail'    => $form['mail'],
-                           'title'    => $form['title'],
-                           'content'   => $form['content'],
+                           'title'   => $form['title'],
+                           'content' => $form['content'],
                          )),
                   'text/html'
                     ));
@@ -75,7 +75,7 @@ class Task
 
   public function thanksForContact($app)
   {
-     return new RedirectResponse($app['url_generator']->generate('thanks'));
+    new RedirectResponse($app['url_generator']->generate('thanks'));
   }
 
 }
