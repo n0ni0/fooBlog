@@ -69,7 +69,8 @@ class backendController implements ControllerProviderInterface
 
     $backend->match('/{id}/edit', function(Request $request, $id) use($app)
     {
-      $post = Post::editPostById($id, $app);
+      $post = new Post($app);
+      $post->editPostById($id);
 
       if(!$post)
       {

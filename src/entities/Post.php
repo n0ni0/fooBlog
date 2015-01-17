@@ -73,10 +73,10 @@ class Post {
   }
 
 
-  static public function editPostByID($id, $app){
-    $table = self::$postTable;
-
-    $post = $app['db']->fetchAssoc("SELECT * FROM $table WHERE id = ?", array($id));
-    return $post;
+  public function editPostByID($id)
+  {
+   $table = self::$postTable;
+   $post = $this->db->fetchAssoc("SELECT * FROM $table WHERE id = ?", array($id));
+   return $post;
   }
 }
