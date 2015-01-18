@@ -74,35 +74,10 @@ class backendController implements ControllerProviderInterface
 
       if(!$post)
       {
-       return new RedirectResponse($app['url_generator']->generate('backend'));
+       $post->redirectToBackend();
       }
 
-      $form = $app['form.factory']->createBuilder('form', $post)
-        ->add('title', 'text', array(
-          'label'       => 'Título',
-          'required'    => true,
-          'max_length'  => 255,
-          'attr'        => array(
-            'class'     => 'span8',
-          )
-        ))
-        ->add('content', 'textarea', array(
-          'label'       => 'Contenido',
-          'required'    => false,
-          'max_length'  => 2000,
-          'attr'        => array(
-            'class'     => 'span8',
-            'rows'      => '10',
-          )
-        ))
-        ->add('created', 'text', array(
-          'label'       => 'Fecha creación',
-          'read_only'   => 'true',
-          'attr'        => array(
-            'class'     => 'span8',
-         )
-        ))
-      ->getForm();
+      $form = $app['form.factory']->create(new editPostType(), $post);
 
       if('POST' == $request->getMethod())
       {
@@ -115,8 +90,7 @@ class backendController implements ControllerProviderInterface
             array('title' => $post['title'], 'content' => $post['content']),
             array('id' => $id)
           );
-
-          return new RedirectResponse($app['url_generator']->generate('backend'));
+          $post->redirectToBackend();
         }
       }
 
