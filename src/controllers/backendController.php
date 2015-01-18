@@ -78,18 +78,13 @@ class backendController implements ControllerProviderInterface
       }
 
       $form = $app['form.factory']->create(new editPostType(), $post);
-
       if('POST' == $request->getMethod())
       {
         $form->bind($request);
         if($form->isValid())
         {
+          $this->addPost($app, $form->getData());
           $post = $form->getData();
-
-          $app['db']->update('articles',
-            array('title' => $post['title'], 'content' => $post['content']),
-            array('id' => $id)
-          );
           $post->redirectToBackend();
         }
       }
@@ -104,7 +99,7 @@ class backendController implements ControllerProviderInterface
     $backend->match('/{id}/delete', function($id) use($app)
     {
       $currentPost = new Post($app, $id);
-      $currentPost->delete();
+      $currentPost->deletePost();
       return new RedirectResponse($app['url_generator']->generate('backend'));
     })
       ->bind('deletePost');
