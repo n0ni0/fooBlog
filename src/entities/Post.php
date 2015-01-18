@@ -79,4 +79,10 @@ class Post {
    $post = $this->db->fetchAssoc("SELECT * FROM $table WHERE id = ?", array($id));
    return $post;
   }
+
+  public function redirectToBackend()
+  {
+    new RedirectResponse($app['url_generator']->generate('backend'));
+  }
+
 }
