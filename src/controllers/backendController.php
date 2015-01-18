@@ -84,18 +84,12 @@ class backendController implements ControllerProviderInterface
         $form->bind($request);
         if($form->isValid())
         {
-          $post = $form->getData();
-
-          $app['db']->update('articles',
-            array('title' => $post['title'], 'content' => $post['content']),
-            array('id' => $id)
-          );
+          $this->addPost($app, $form->getData());
           $post->redirectToBackend();
         }
       }
 
       return $app['twig']->render('backend/editPost.twig', array('article' => $post, 'form' => $form->createView()));
-
     })
     ->bind('editPost');
 
