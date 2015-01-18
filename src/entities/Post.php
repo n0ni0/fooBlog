@@ -68,7 +68,7 @@ class Post {
   }
 
 
-  public function delete() {
+  public function deletePost() {
     $this->db->delete('articles', array('id' => $this->getId()));
   }
 
