@@ -128,4 +128,4 @@ class frontendController implements ControllerProviderInterface
   return $frontend;
   }
 }
-?>
+

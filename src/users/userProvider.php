@@ -46,4 +46,4 @@ class userProvider implements UserProviderInterface
   }
 
 }
-?>
+
